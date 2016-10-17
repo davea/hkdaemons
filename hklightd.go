@@ -65,8 +65,6 @@ func main() {
 			value := "off"
 			if on {
 				value = "on"
-			} else {
-				value = "off"
 			}
 			log.Printf("Switching %s", value)
 			err = cli.Publish(&client.PublishOptions{

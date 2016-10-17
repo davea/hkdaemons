@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/brutella/hc"
 	"github.com/brutella/hc/accessory"
 	"github.com/brutella/log"
@@ -14,7 +15,7 @@ func main() {
 	log.Verbose = true
 	log.Info = true
 
-	file, err := ioutil.ReadFile("./config.json")
+	file, err := ioutil.ReadFile("./hkswitchd.json")
 	if err != nil {
 		panic(err)
 	}
@@ -55,35 +56,31 @@ func main() {
 			Name:         accessory_config["name"].(string),
 			Manufacturer: accessory_config["manufacturer"].(string),
 		}
+		control_topic := fmt.Sprintf("switch_%s/control", accessory_config["machine_id"].(string))
+		state_topic := fmt.Sprintf("switch_%s/state", accessory_config["machine_id"].(string))
 
 		acc := accessory.NewSwitch(info)
 
 		acc.Switch.On.OnValueRemoteUpdate(func(on bool) {
-			if on == true {
-				err = cli.Publish(&client.PublishOptions{
-					QoS:       mqtt.QoS0,
-					TopicName: []byte(accessory_config["control_topic"].(string)),
-					Message:   []byte("on"),
-				})
-				if err != nil {
-					panic(err)
-				}
-			} else {
-				err = cli.Publish(&client.PublishOptions{
-					QoS:       mqtt.QoS0,
-					TopicName: []byte(accessory_config["control_topic"].(string)),
-					Message:   []byte("off"),
-				})
-				if err != nil {
-					panic(err)
-				}
+			value := "off"
+			if on {
+				value = "on"
+			}
+			log.Printf("Switching %s", value)
+			err = cli.Publish(&client.PublishOptions{
+				QoS:       mqtt.QoS0,
+				TopicName: []byte(control_topic),
+				Message:   []byte(fmt.Sprintf("power:%s", value)),
+			})
+			if err != nil {
+				panic(err)
 			}
 		})
 
 		err = cli.Subscribe(&client.SubscribeOptions{
 			SubReqs: []*client.SubReq{
 				&client.SubReq{
-					TopicFilter: []byte(accessory_config["state_topic"].(string)),
+					TopicFilter: []byte(state_topic),
 					QoS:         mqtt.QoS0,
 					// Define the processing of the message handler.
 					Handler: func(topicName, message []byte) {

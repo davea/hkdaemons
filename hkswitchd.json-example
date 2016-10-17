@@ -1,0 +1,13 @@
+{
+    "broker": "127.0.0.1:1883",
+    "client_id": "hkswitchd",
+    "pin": "12345678",
+    "storage_path": "./db_hkswitchd",
+    "accessories": [
+        {
+            "name": "Sonoff 01",
+            "manufacturer": "ITEAD",
+            "machine_id": "01020304"
+        }
+    ]
+}
