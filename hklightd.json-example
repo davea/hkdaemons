@@ -1,0 +1,13 @@
+{
+    "broker": "127.0.0.1:1883",
+    "client_id": "hklightd",
+    "pin": "12345678",
+    "storage_path": "./db_hklightd",
+    "accessories": [
+        {
+            "name": "NeoPixel Strip",
+            "manufacturer": "Example Corp.",
+            "machine_id": "aabbccdd"
+        }
+    ]
+}

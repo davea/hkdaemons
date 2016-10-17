@@ -1,2 +1,3 @@
-db/
-config.json
+db_*
+hklightd.json
+hkswitchd.json
