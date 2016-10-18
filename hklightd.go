@@ -56,8 +56,9 @@ func main() {
 			Name:         accessory_config["name"].(string),
 			Manufacturer: accessory_config["manufacturer"].(string),
 		}
-		control_topic := fmt.Sprintf("light_%s/control", accessory_config["machine_id"].(string))
-		state_topic := fmt.Sprintf("light_%s/state", accessory_config["machine_id"].(string))
+		control_topic := fmt.Sprintf("light/%s/control", accessory_config["machine_id"].(string))
+		config_topic := fmt.Sprintf("light/%s/config", accessory_config["machine_id"].(string))
+		state_topic := fmt.Sprintf("light/%s/state", accessory_config["machine_id"].(string))
 
 		acc := accessory.NewLightbulb(info)
 
@@ -128,6 +129,20 @@ func main() {
 					},
 				},
 			},
+		})
+		if err != nil {
+			panic(err)
+		}
+
+		json_config, err := json.Marshal(accessory_config["config"].(map[string]interface{}))
+		if err != nil {
+			panic(err)
+		}
+		err = cli.Publish(&client.PublishOptions{
+			QoS:       mqtt.QoS0,
+			Retain:    true,
+			TopicName: []byte(config_topic),
+			Message:   json_config,
 		})
 		if err != nil {
 			panic(err)

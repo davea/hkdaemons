@@ -7,7 +7,15 @@
         {
             "name": "NeoPixel Strip",
             "manufacturer": "Example Corp.",
-            "machine_id": "aabbccdd"
+            "machine_id": "aabbccdd",
+            "config": {
+                "gpio_pin": 5,
+                "led_count": 19,
+                "hue": 120,
+                "saturation": 50,
+                "brightness": 10,
+                "power": "on"
+            }
         }
     ]
 }
