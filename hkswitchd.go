@@ -62,15 +62,15 @@ func main() {
 		acc := accessory.NewSwitch(info)
 
 		acc.Switch.On.OnValueRemoteUpdate(func(on bool) {
-			value := "off"
+			value := 0
 			if on {
-				value = "on"
+				value = 1
 			}
 			log.Printf("Switching %s", value)
 			err = cli.Publish(&client.PublishOptions{
 				QoS:       mqtt.QoS0,
 				TopicName: []byte(control_topic),
-				Message:   []byte(fmt.Sprintf("power:%s", value)),
+				Message:   []byte(fmt.Sprintf("%d", value)),
 			})
 			if err != nil {
 				panic(err)
@@ -84,7 +84,7 @@ func main() {
 					QoS:         mqtt.QoS0,
 					// Define the processing of the message handler.
 					Handler: func(topicName, message []byte) {
-						new_value := "on" == string(message)
+						new_value := "1" == string(message)
 						if acc.Switch.On.GetValue() != new_value {
 							log.Printf("Value externally changed to %t\n", new_value)
 							acc.Switch.On.SetValue(new_value)
