@@ -1,0 +1,13 @@
+{
+    "broker": "127.0.0.1:1883",
+    "client_id": "hkthermostatd",
+    "pin": "12312312",
+    "storage_path": "./db_hkthermostatd",
+    "manufacturer": "HomeKit Developer",
+    "accessories": [
+        {
+            "name": "Living Room",
+            "id": "livingroom"
+        }
+    ]
+}
