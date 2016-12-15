@@ -72,7 +72,7 @@ func main() {
 						if err != nil {
 							panic(err)
 						}
-						log.Printf("%s value externally changed to %f\n", string(topicName), new_value)
+						// log.Printf("%s value externally changed to %f\n", string(topicName), new_value)
 						acc.TempSensor.CurrentTemperature.SetValue(new_value)
 					},
 				},
