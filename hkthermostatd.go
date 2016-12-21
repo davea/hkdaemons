@@ -5,16 +5,14 @@ import (
 	"fmt"
 	"github.com/brutella/hc"
 	"github.com/brutella/hc/accessory"
-	"github.com/brutella/log"
 	"github.com/yosssi/gmq/mqtt"
 	"github.com/yosssi/gmq/mqtt/client"
 	"io/ioutil"
+	"log"
 	"strconv"
 )
 
 func main() {
-	log.Verbose = true
-	log.Info = true
 
 	file, err := ioutil.ReadFile("./hkthermostatd.json")
 	if err != nil {
