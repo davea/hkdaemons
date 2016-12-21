@@ -9,12 +9,15 @@ import (
 	"github.com/yosssi/gmq/mqtt/client"
 	"io/ioutil"
 	"log"
+	"os/user"
+	"path/filepath"
 	"strconv"
 )
 
 func main() {
 
-	file, err := ioutil.ReadFile("./hkthermostatd.json")
+	usr, _ := user.Current()
+	file, err := ioutil.ReadFile(filepath.Join(usr.HomeDir, ".config/hkdaemons/hkthermostatd.json"))
 	if err != nil {
 		panic(err)
 	}
@@ -186,7 +189,7 @@ func main() {
 
 	}
 
-	transport_config := hc.Config{Pin: config["pin"].(string), StoragePath: config["storage_path"].(string)}
+	transport_config := hc.Config{Pin: config["pin"].(string), StoragePath: filepath.Join(usr.HomeDir, ".config/hkdaemons/data/hkthermostatd")}
 	t, err := hc.NewIPTransport(transport_config, accessories[0], accessories[1:]...)
 	if err != nil {
 		log.Fatal(err)

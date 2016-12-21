@@ -5,17 +5,17 @@ import (
 	"fmt"
 	"github.com/brutella/hc"
 	"github.com/brutella/hc/accessory"
-	"github.com/brutella/log"
 	"github.com/yosssi/gmq/mqtt"
 	"github.com/yosssi/gmq/mqtt/client"
 	"io/ioutil"
+	"log"
+	"os/user"
+	"path/filepath"
 )
 
 func main() {
-	log.Verbose = true
-	log.Info = true
-
-	file, err := ioutil.ReadFile("./hklightd.json")
+	usr, _ := user.Current()
+	file, err := ioutil.ReadFile(filepath.Join(usr.HomeDir, ".config/hkdaemons/hklightd.json"))
 	if err != nil {
 		panic(err)
 	}
@@ -150,7 +150,7 @@ func main() {
 		accessories = append(accessories, acc.Accessory)
 	}
 
-	transport_config := hc.Config{Pin: config["pin"].(string), StoragePath: config["storage_path"].(string)}
+	transport_config := hc.Config{Pin: config["pin"].(string), StoragePath: filepath.Join(usr.HomeDir, ".config/hkdaemons/data/hklightd")}
 	t, err := hc.NewIPTransport(transport_config, accessories[0], accessories[1:]...)
 	if err != nil {
 		log.Fatal(err)
