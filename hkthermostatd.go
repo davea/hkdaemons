@@ -61,7 +61,7 @@ func main() {
 
 		is_thermostat := accessory_config["controllable"].(bool)
 		if is_thermostat {
-			acc := accessory.NewThermostat(info, 0, -20, 40, 0.1)
+			acc := accessory.NewThermostat(info, 0, -5, 30, 0.1)
 
 			acc.Thermostat.TargetTemperature.OnValueRemoteUpdate(func(value float64) {
 				log.Printf("%s TargetTemperature: %02f", info.Name, value)
